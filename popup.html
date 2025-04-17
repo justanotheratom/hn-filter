@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>HN Filter Popup</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 380px;
+            max-height: 650px;
+            overflow: hidden;
+            font-family: Verdana, Arial, sans-serif;
+            background-color: #f6f6ef;
+            color: #333;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding: 16px;
+            background-color: #fff;
+            border: 1px solid #e3e3e3;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+        .controls {
+            margin-bottom: 12px;
+        }
+        .controls label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-style: normal;
+        }
+        .controls label input {
+            margin-right: 8px;
+            accent-color: #ff6600;
+            width: 16px;
+            height: 16px;
+        }
+        #results {
+            flex: 1;
+            overflow-y: auto;
+            border-top: 1px solid #e3e3e3;
+            padding-top: 12px;
+        }
+        .loading, .no-match {
+            font-style: italic;
+            color: #555;
+            padding: 8px 0;
+        }
+        .item {
+            display: flex;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px solid #e3e3e3;
+            font-style: normal;
+        }
+        .item:last-child {
+            border-bottom: none;
+        }
+        .item a.title {
+            color: #333;
+            text-decoration: none;
+            flex: 1;
+            font-style: normal;
+        }
+        .item a.title:hover {
+            text-decoration: underline;
+        }
+        .item .age {
+            font-size: 12px;
+            color: #555;
+            font-style: italic;
+            margin: 0 8px;
+            white-space: nowrap;
+        }
+        .item a.comments {
+            font-size: 12px;
+            color: #555;
+            white-space: nowrap;
+            font-style: normal;
+            text-decoration: none;
+        }
+        .item a.comments:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="controls">
+            <label><input type="checkbox" id="recent"/> Recent (<2 hr)</label>
+            <label><input type="checkbox" id="low"/> Low comments (<10)</label>
+            <label><input type="checkbox" id="topc"/> Top 3 comments</label>
+            <label><input type="checkbox" id="oldest"/> Top 3 oldest</label>
+        </div>
+        <div id="results" class="loading">Loading…</div>
+    </div>
+    <script src="popup.js"></script>
+</body>
+</html>

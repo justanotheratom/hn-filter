@@ -1,0 +1,9 @@
+{
+    "manifest_version": 3,
+    "name": "HN Filter",
+    "version": "1.0",
+    "description": "Fetch and filter Hacker News front page posts",
+    "permissions": ["storage"],
+    "host_permissions": ["https://news.ycombinator.com/*"],
+    "action": {"default_popup": "popup.html"}
+}
