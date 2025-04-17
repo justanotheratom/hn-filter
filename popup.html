@@ -7,156 +7,290 @@
         html, body {
             margin: 0;
             padding: 0;
-            width: 380px;
-            max-height: 650px;
-            overflow: hidden;
-            font-family: Verdana, Arial, sans-serif;
-            background-color: #f6f6ef;
-            color: #333;
+            width: 480px;
+            max-height: 600px;
+            overflow-x: hidden;
+            overflow-y: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            background-color: #ffffff;
+            color: #2c3e50;
         }
         .container {
             display: flex;
             flex-direction: column;
-            height: 100%;
+            height: 600px;
             padding: 16px;
-            background-color: #fff;
-            border: 1px solid #e3e3e3;
-            border-radius: 6px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            background-color: #ffffff;
             box-sizing: border-box;
             width: 100%;
+            overflow-x: hidden;
         }
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
             width: 100%;
             box-sizing: border-box;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #edf2f7;
         }
-        .settings-btn {
-            background: none;
-            border: none;
-            color: #666;
-            cursor: pointer;
-            padding: 4px 8px;
+        .header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ff6600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .header h2::before {
+            content: "Y";
+            background: #ff6600;
+            color: white;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             border-radius: 4px;
             font-size: 14px;
+            font-weight: bold;
+        }
+        .settings-btn {
+            background: #f7fafc;
+            border: 1px solid #edf2f7;
+            color: #4a5568;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
             white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
         }
         .settings-btn:hover {
-            background-color: #f0f0f0;
+            background-color: #edf2f7;
+            border-color: #e2e8f0;
         }
         .settings-panel {
             display: none;
-            margin-bottom: 12px;
-            padding: 8px;
-            background-color: #f8f8f8;
-            border-radius: 4px;
+            margin-bottom: 16px;
+            padding: 12px;
+            background-color: #f8fafc;
+            border-radius: 8px;
             width: 100%;
             box-sizing: border-box;
+            border: 1px solid #edf2f7;
+            transition: all 0.3s ease;
         }
         .settings-panel.visible {
             display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .controls {
             width: 100%;
             box-sizing: border-box;
+            display: grid;
+            gap: 10px;
         }
         .controls label {
             display: flex;
             align-items: center;
-            margin-bottom: 8px;
-            font-size: 14px;
-            font-style: normal;
+            font-size: 13px;
+            color: #4a5568;
             width: 100%;
             box-sizing: border-box;
+            padding: 4px 0;
+            transition: all 0.2s ease;
+        }
+        .controls label:hover {
+            color: #2d3748;
         }
         .controls label input {
-            margin-right: 8px;
+            margin-right: 10px;
             accent-color: #ff6600;
             width: 16px;
             height: 16px;
             flex-shrink: 0;
+            cursor: pointer;
         }
         #results {
             flex: 1;
-            overflow-y: scroll;
-            border-top: 1px solid #e3e3e3;
-            padding-top: 12px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-top: 8px;
             width: 100%;
             box-sizing: border-box;
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e0 #f7fafc;
+            min-height: 0;
         }
         #results::-webkit-scrollbar {
-            display: none; /* Chrome, Safari and Opera */
+            width: 6px;
+        }
+        #results::-webkit-scrollbar-track {
+            background: #f7fafc;
+            border-radius: 3px;
+        }
+        #results::-webkit-scrollbar-thumb {
+            background-color: #cbd5e0;
+            border-radius: 3px;
         }
         .loading, .no-match {
             font-style: italic;
-            color: #555;
-            padding: 8px 0;
+            color: #718096;
+            padding: 12px 0;
+            text-align: center;
         }
         .item {
             display: flex;
-            align-items: center;
-            padding: 6px 0;
-            border-bottom: 1px solid #e3e3e3;
+            align-items: flex-start;
+            padding: 10px 0;
+            border-bottom: 1px solid #edf2f7;
             font-style: normal;
+            transition: all 0.2s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .item:hover {
+            background-color: #f7fafc;
+            padding-left: 8px;
+            padding-right: 8px;
+            margin: 0 -8px;
         }
         .item:last-child {
             border-bottom: none;
         }
         .item a.title {
-            color: #333;
+            color: #2d3748;
             text-decoration: none;
             flex: 1;
             font-style: normal;
+            font-size: 14px;
+            line-height: 1.4;
+            text-align: left;
+            padding-right: 12px;
+            white-space: normal;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            word-break: break-word;
         }
         .item a.title:hover {
-            text-decoration: underline;
+            color: #ff6600;
         }
         .item .age {
             font-size: 12px;
-            color: #555;
-            font-style: italic;
+            color: #718096;
+            font-style: normal;
             margin: 0 8px;
             white-space: nowrap;
         }
         .item a.comments {
             font-size: 12px;
-            color: #555;
+            color: #718096;
             white-space: nowrap;
             font-style: normal;
             text-decoration: none;
+            padding: 2px 6px;
+            background: #f7fafc;
+            border-radius: 4px;
+            transition: all 0.2s ease;
         }
         .item a.comments:hover {
-            text-decoration: underline;
+            background: #edf2f7;
+            color: #4a5568;
+        }
+        #karma {
+            font-size: 13px;
+            color: #2d3748;
+            background: linear-gradient(135deg, #fff3e6, #ffe4cc);
+            padding: 6px 12px 6px 32px;
+            border-radius: 6px;
+            border: 1px solid #ffd5b3;
+            position: relative;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        #karma::before {
+            content: "★";
+            position: absolute;
+            left: 10px;
+            color: #ff6600;
+            font-size: 14px;
+        }
+        #karma:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(255, 102, 0, 0.1);
+            border-color: #ffbf80;
+        }
+        #loginForm {
+            display: none;
+            margin-bottom: 16px;
+            padding: 16px;
+            background-color: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #edf2f7;
+            animation: fadeIn 0.3s ease;
+        }
+        #loginForm input {
+            width: 100%;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+        #loginForm input:focus {
+            outline: none;
+            border-color: #ff6600;
+            box-shadow: 0 0 0 2px rgba(255, 102, 0, 0.1);
+        }
+        #loginBtn {
+            width: 100%;
+            padding: 8px;
+            background-color: #ff6600;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        #loginBtn:hover {
+            background-color: #e65c00;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h2 style="margin: 0; font-size: 16px;">HN Filter</h2>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <span id="karma" style="font-size: 14px; color: #666;">Karma: --</span>
+            <h2>HN Filter</h2>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <span id="karma">Karma: --</span>
                 <button class="settings-btn" id="settingsBtn">⚙️ Settings</button>
             </div>
         </div>
-        <div id="loginForm" style="display: none; margin-bottom: 12px; padding: 8px; background-color: #f8f8f8; border-radius: 4px;">
-            <div style="margin-bottom: 8px;">
-                <input type="text" id="username" placeholder="HN Username" style="width: 100%; padding: 4px; margin-bottom: 4px;"/>
-                <input type="password" id="password" placeholder="HN Password" style="width: 100%; padding: 4px;"/>
+        <div id="loginForm">
+            <div style="margin-bottom: 12px;">
+                <input type="text" id="username" placeholder="HN Username"/>
+                <input type="password" id="password" placeholder="HN Password"/>
             </div>
-            <button id="loginBtn" style="width: 100%; padding: 4px; background-color: #ff6600; color: white; border: none; border-radius: 4px; cursor: pointer;">Login</button>
+            <button id="loginBtn">Login</button>
         </div>
         <div class="settings-panel" id="settingsPanel">
             <div class="controls">
-                <label><input type="checkbox" id="recent"/> Recent (<2 hr)</label>
+                <label><input type="checkbox" id="recent"/> Recent (<2 hr)</label>
                 <label><input type="checkbox" id="low"/> Low comments (<10)</label>
-                <label><input type="checkbox" id="topc"/> Top 3 comments</label>
-                <label><input type="checkbox" id="oldest"/> Top 3 oldest</label>
+                <label><input type="checkbox" id="topc"/> Top 3 comments</label>
+                <label><input type="checkbox" id="oldest"/> Top 3 oldest</label>
             </div>
         </div>
         <div id="results" class="loading">Loading…</div>
