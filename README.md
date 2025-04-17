@@ -5,6 +5,7 @@ A simple Chrome/Edge extension that fetches the live Hacker News front page, app
 ## Features
 
 - **Fetch & scrape** Hacker News front page HTML (no external API keys)  
+- **Display karma points** for logged-in users
 - **Filters**  
   - Recent posts (< 2 hr)  
   - Low‑comment posts (< 10 comments)  
@@ -21,20 +22,21 @@ A simple Chrome/Edge extension that fetches the live Hacker News front page, app
 2. **Open your browser's extensions page**  
    - Chrome: `chrome://extensions`  
    - Edge:   `edge://extensions`  
-3. **Enable Developer mode** (toggle in the top‐right or bottom‐left).  
+3. **Enable Developer mode** (toggle in the top‐right or bottom‑left).  
 4. Click **Load unpacked** and select the unzipped `hn-filter` folder.  
 5. Navigate anywhere, click the **H** icon, and toggle your filters.
 
 ## Usage
 
 1. Click the **HN Filter** icon in your toolbar.  
-2. Check any combination of filters:  
+2. If not logged in, enter your HN credentials to see your karma points.
+3. Check any combination of filters:  
    - ✅ Recent (< 2 hr)  
    - ✅ Low comments (< 10)  
    - ✅ Top 3 commented  
    - ✅ Top 3 oldest  
-3. Scroll the results pane to browse matching posts.  
-4. Click a title to open the story, or click the **(n comments)** link to jump to the discussion.
+4. Scroll the results pane to browse matching posts.  
+5. Click a title to open the story, or click the **(n comments)** link to jump to the discussion.
 
 ## Configuration
 

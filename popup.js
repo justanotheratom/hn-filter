@@ -13,6 +13,18 @@ const COLORS = {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    const settingsBtn = document.getElementById('settingsBtn')
+    const settingsPanel = document.getElementById('settingsPanel')
+    const karmaEl = document.getElementById('karma')
+    const loginForm = document.getElementById('loginForm')
+    const usernameInput = document.getElementById('username')
+    const passwordInput = document.getElementById('password')
+    const loginBtn = document.getElementById('loginBtn')
+    
+    settingsBtn.addEventListener('click', () => {
+        settingsPanel.classList.toggle('visible')
+    })
+
     const recentEl = document.getElementById('recent')
     const lowEl = document.getElementById('low')
     const topEl = document.getElementById('topc')
@@ -41,6 +53,107 @@ document.addEventListener('DOMContentLoaded', () => {
     [recentEl, lowEl, topEl, oldestEl].forEach(el =>
         el.addEventListener('change', updateAndRender)
     )
+
+    async function checkLogin() {
+        console.log('Checking login status...')
+        const { hnCredentials } = await chrome.storage.local.get('hnCredentials')
+        console.log('Stored credentials:', hnCredentials ? 'Found' : 'Not found')
+        if (!hnCredentials) {
+            loginForm.style.display = 'block'
+            return false
+        }
+        return true
+    }
+
+    async function fetchKarma() {
+        console.log('Starting karma fetch...')
+        const { hnCredentials } = await chrome.storage.local.get('hnCredentials')
+        if (!hnCredentials) {
+            console.log('No credentials found')
+            karmaEl.textContent = 'Karma: --'
+            return
+        }
+
+        try {
+            console.log('Attempting login...')
+            // Create form data
+            const formData = new URLSearchParams()
+            formData.append('acct', hnCredentials.username)
+            formData.append('pw', hnCredentials.password)
+            formData.append('goto', 'news')
+
+            // Attempt login
+            const loginResult = await fetch('https://news.ycombinator.com/login', {
+                method: 'POST',
+                body: formData,
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            })
+
+            console.log('Login response status:', loginResult.status)
+            
+            // Now try to fetch the user page
+            console.log('Fetching user page...')
+            const userResp = await fetch(`https://news.ycombinator.com/user?id=${hnCredentials.username}`, {
+                credentials: 'include'
+            })
+            
+            if (!userResp.ok) {
+                throw new Error('Failed to fetch user page')
+            }
+
+            const html = await userResp.text()
+            console.log('User page HTML length:', html.length)
+            
+            // Look for karma in the response
+            const karmaMatch = html.match(/karma:<\/td><td>(\d+)</)
+            if (karmaMatch) {
+                console.log('Found karma:', karmaMatch[1])
+                karmaEl.textContent = `Karma: ${karmaMatch[1]}`
+            } else {
+                console.log('No karma found in response')
+                karmaEl.textContent = 'Karma: --'
+                throw new Error('Could not find karma in response')
+            }
+        } catch (e) {
+            console.error('Error in fetchKarma:', e)
+            karmaEl.textContent = 'Karma: --'
+            await chrome.storage.local.remove('hnCredentials')
+            loginForm.style.display = 'block'
+        }
+    }
+
+    loginBtn.addEventListener('click', async () => {
+        console.log('Login button clicked')
+        const username = usernameInput.value.trim()
+        const password = passwordInput.value.trim()
+        
+        if (!username || !password) {
+            console.log('Missing username or password')
+            alert('Please enter both username and password')
+            return
+        }
+
+        console.log('Storing credentials...')
+        await chrome.storage.local.set({
+            hnCredentials: { username, password }
+        })
+
+        loginForm.style.display = 'none'
+        passwordInput.value = ''
+        
+        console.log('Starting karma fetch after login...')
+        await fetchKarma()
+    })
+
+    checkLogin().then(isLoggedIn => {
+        console.log('Initial login check result:', isLoggedIn)
+        if (isLoggedIn) {
+            fetchKarma()
+        }
+    })
 })
 
 async function fetchAndRender(opts) {
